@@ -442,7 +442,7 @@ function Import-Package {
                         If( $bootstrapper.TestNative( $_.ToString() ) ){
                             Write-Verbose "[Import-Package:Loading] $_ is a native dll for $($PackageData.Name)"
                             Write-Verbose "- Moving to '$NativePath'"
-                            $bootstrapper.LoadNative( $_.ToString(), $NativePath ) | ForEach-Object { Write-Verbose "[Import-Package:Loading] $_ returned leaky handle $_"}   
+                            $bootstrapper.LoadNative( $_.ToString(), $NativePath )   
                         } Else {
                             Write-Verbose "[Import-Package:Loading] $_ is not native. It is, however, a OS-specific dll for $($PackageData.Name)"
                             Import-Module $_

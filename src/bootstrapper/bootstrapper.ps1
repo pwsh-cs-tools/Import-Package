@@ -72,6 +72,17 @@
     #>
     & "$PSScriptRoot/nupkg/RemoteNupkg.ps1" $Bootstrapper | Out-Null
 
+    <#
+        $Bootstrapper.System:
+        - $Bootstrapper.System.Framework
+        - $Bootstrapper.System.Runtimes
+        - $Bootstrapper.System.Runtime
+    #>
+    & "$PSScriptRoot/system/system_identifiers.ps1" $Bootstrapper | Out-Null
+
+    # $Bootstrapper.TestNative() and $Bootstrapper.LoadNative()
+    & "$PSScriptRoot/loading/LoadNative.ps1" $Bootstrapper | Out-Null
+
     # Refactor Bootstrapper.System after runtimeidentifiers.ps1 is refactored
 
     $Bootstrapper
