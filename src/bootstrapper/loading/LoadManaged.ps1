@@ -14,7 +14,10 @@ param(
                 [bool] $Partial = $false
             )
 
-            # todo: add handling of native/unmanaged assemblies
+            If( [string]::IsNullOrWhiteSpace(( $Path )) ){
+                throw [System.ArgumentNullException]::new( "Path" )
+                return
+            }
 
             try {
 
@@ -33,6 +36,8 @@ param(
 
                 Add-Type @AddTypeParams
                 
-            } catch { Write-Host "Unable to load $Path" }
+            } catch {
+                Write-Error "[Import-Package:Internals] Unable to load $Path`n$($_.Exception.Message)"
+            }
         }
 }

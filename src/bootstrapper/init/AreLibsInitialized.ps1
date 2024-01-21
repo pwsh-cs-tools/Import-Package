@@ -9,7 +9,7 @@ param(
         -MemberType ScriptMethod `
         -Name AreLibsInitialized `
         -Value {
-            $libs = $this.Internal
+            $libs = $this.InternalLibraries
             (@(
                 "Nuget.Frameworks",
                 "Knapcode.Minizip"
