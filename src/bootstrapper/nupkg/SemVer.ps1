@@ -184,17 +184,17 @@ param(
             }
 
             If( $parsed.MinVersion ){
-                $parsed.MinVersion = $Bootstrapper.SemVer.Parse( $parsed.MinVersion )
+                $parsed.MinVersion = $this.Parse( $parsed.MinVersion )
             }
             If( $parsed.MaxVersion ){
-                $parsed.MaxVersion = $Bootstrapper.SemVer.Parse( $parsed.MaxVersion )
+                $parsed.MaxVersion = $this.Parse( $parsed.MaxVersion )
             }
 
             $out_range = If( $Name ){
 
                 $all_versions = $Bootstrapper.RemoteNupkg.GetAllVersions( $Name )
                 $all_versions = $all_versions | ForEach-Object {
-                    $Bootstrapper.SemVer.Parse( $_ )
+                    $this.Parse( $_ )
                 }
     
                 $effective_range = @{
@@ -212,9 +212,9 @@ param(
                     $effective_range.MaxVersion = & {
                         $acceptable_versions = $all_versions | Where-Object {
                             If( $parsed.MaxVersionInclusive ){
-                                $Bootstrapper.SemVer.Compare( $_, $parsed.MaxVersion ) -le 0
+                                $this.Compare( $_, $parsed.MaxVersion ) -le 0
                             } Else {
-                                $Bootstrapper.SemVer.Compare( $_, $parsed.MaxVersion ) -lt 0
+                                $this.Compare( $_, $parsed.MaxVersion ) -lt 0
                             }
                         } | Where-Object {
                             -not $_.PreRelease -and -not $_.LegacyPrerelease
@@ -231,9 +231,9 @@ param(
                     $effective_range.MinVersion = & {
                         $acceptable_versions = $all_versions | Where-Object {
                             If( $parsed.MinVersionInclusive ){
-                                $Bootstrapper.SemVer.Compare( $_, $parsed.MinVersion ) -ge 0
+                                $this.Compare( $_, $parsed.MinVersion ) -ge 0
                             } Else {
-                                $Bootstrapper.SemVer.Compare( $_, $parsed.MinVersion ) -gt 0
+                                $this.Compare( $_, $parsed.MinVersion ) -gt 0
                             }
                         } | Where-Object {
                             -not $_.PreRelease -and -not $_.LegacyPrerelease
@@ -248,7 +248,7 @@ param(
             }
 
             If( $out_range.MinVersion -and $out_range.MaxVersion ){
-                switch( $Bootstrapper.SemVer.Compare( $out_range.MinVersion, $out_range.MaxVersion ) ){
+                switch( $this.Compare( $out_range.MinVersion, $out_range.MaxVersion ) ){
                     { $_ -gt 0 } {
                         throw "Invalid version range: $Range"
                     }
