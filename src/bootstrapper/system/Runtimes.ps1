@@ -188,10 +188,10 @@ param(
         } | Where-Object { $_.tally -eq 0 } | ForEach-Object { $_.rid } | Select-Object -First 1
     
         if( $rid.Count -ne 1 ){
-            Write-Host "Unable to determine the correct RID for this system."
-            Write-Host "Possible RID Count: $($rid.Count)"
-            Write-Host "Possible RIDs: $($rid -join ", ")"
-            Write-Host "All RIDs Detected: $($rids -join ", ")"
+            Write-Warning "[Import-Package:Internals] Unable to determine the correct RID for this system."
+            Write-Warning "[Import-Package:Internals] Possible RID Count: $($rid.Count)"
+            Write-Warning "[Import-Package:Internals] Possible RIDs: $($rid -join ", ")"
+            Write-Warning "[Import-Package:Internals] All RIDs Detected: $($rids -join ", ")"
         }
     
         $system_identifiers.Runtime = $rid

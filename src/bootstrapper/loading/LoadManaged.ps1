@@ -29,7 +29,7 @@ param(
                 } elseif ( Test-Path $Path ) {
                     $AddTypeParams.Path = $Path
                 } else {
-                    Write-Host "Unable to load $Path"
+                    Write-Error "[Import-Package:Internals] Unable to find $Path"
                     return
                 }
 
