@@ -22,14 +22,12 @@ param(
                 Try {
                     Install-Package $package_name `
                         -ProviderName NuGet `
-                        -RequiredVersion $latest `
                         -SkipDependencies `
                         -Force `
                         -ErrorAction Stop | Out-Null
                 } Catch {        
                     Install-Package $package_name `
                         -ProviderName NuGet `
-                        -RequiredVersion $latest `
                         -SkipDependencies `
                         -Scope CurrentUser `
                         -Force | Out-Null
