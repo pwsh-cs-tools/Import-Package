@@ -6,10 +6,10 @@ param(
 
 & {
     $remote_nupkg_reader = New-Object psobject
-    
+
     $remote_nupkg_reader | Add-Member `
         -MemberType ScriptMethod `
-        -Name ListEntries `
+        -Name GetDownloadUrl `
         -Value {
             param(
                 [parameter(Mandatory = $true)]
@@ -27,12 +27,26 @@ param(
             }
             $id = $resource."@id"
 
-            $url = @(
+            @(
                 $id,
                 $Name, "/",
                 "$Version", "/",
                 "$Name.$Version.nupkg"
             ) -join ""
+        }
+    
+    $remote_nupkg_reader | Add-Member `
+        -MemberType ScriptMethod `
+        -Name ListEntries `
+        -Value {
+            param(
+                [parameter(Mandatory = $true)]
+                [string]
+                $Name,
+                [string] $Verion
+            )
+
+            $url = $this.GetDownloadUrl( $Name, $Version )
 
             $Bootstrapper.MiniZip.GetRemoteZipEntries( $url )
         }
