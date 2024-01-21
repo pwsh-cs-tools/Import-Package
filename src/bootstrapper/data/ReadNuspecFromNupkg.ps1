@@ -1,5 +1,11 @@
+param(
+    [parameter(Mandatory = $true)]
+    [psobject]
+    $Bootstrapper
+)
+
 & {
-    $Exported | Add-Member `
+    $Bootstrapper | Add-Member `
         -MemberType ScriptMethod `
         -Name ReadNuspecFromNupkg `
         -Value {
