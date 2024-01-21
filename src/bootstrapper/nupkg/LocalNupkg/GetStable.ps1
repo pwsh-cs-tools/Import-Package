@@ -8,11 +8,18 @@ param(
 )
 
 & {
-    $remote_nupkg_reader | Add-Member `
+    $local_nupkg_reader | Add-Member `
         -MemberType ScriptMethod `
         -Name GetStable `
         -Value {
-            param( $Name, $Wanted )
+            param(
+                [string] $Name,
+                $Wanted
+            )
+            
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "Name cannot be null or whitespace"
+            }
             
             $version = $this.GetAllVersions( $Name ) | Where-Object {
                 $parsed = $Bootstrapper.Semver.Parse( $_ )

@@ -22,6 +22,10 @@ param(
                 [string] $Url
             )
 
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "Name cannot be null or whitespace"
+            }
+
             $reader = $this.RemoteZipReaderFactory.GetReaderAsync( $Url )
             $reader = $reader.GetAwaiter().GetResult()
 

@@ -123,9 +123,13 @@ param(
                 -Name GetFromPatches `
                 -Value {
                     param(
-                        $Name,
+                        [string] $Name,
                         $PatchPath = (Join-Path $Bootstrapper.Root "Patches")
                     )
+
+                    If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                        Throw "Name cannot be null or whitespace"
+                    }
 
                     $this.GetFromCache( $Name, $PatchPath )
                 }

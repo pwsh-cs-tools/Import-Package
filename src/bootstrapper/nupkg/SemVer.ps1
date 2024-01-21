@@ -12,7 +12,13 @@ param(
         -Name Parse `
         -Value {
 
-            param( [string] $semVerString )
+            param(
+                [string] $semVerString
+            )
+            
+            If( [string]::IsNullOrWhiteSpace( $semVerString ) ){
+                Throw "Name cannot be null or whitespace"
+            }
 
             $semVerParts = $semVerString -split '[-\+]'
             If( $semVerParts.Count -gt 2 ){

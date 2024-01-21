@@ -10,11 +10,13 @@ param(
         -Name GetDownloadUrl `
         -Value {
             param(
-                [parameter(Mandatory = $true)]
-                [string]
-                $Name,
+                [string] $Name,
                 [string] $Verion
             )
+
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "Name cannot be null or whitespace"
+            }
 
             If( $Version -eq $null ) {
                 $Version = $this.GetStable( $Name )

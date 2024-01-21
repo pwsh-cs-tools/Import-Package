@@ -13,11 +13,13 @@ param(
         -Name ListEntries `
         -Value {
             param(
-                [parameter(Mandatory = $true)]
-                [string]
-                $Name,
+                [string] $Name,
                 [string] $Verion
             )
+
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "Name cannot be null or whitespace"
+            }
 
             $url = $this.GetDownloadUrl( $Name, $Version )
 

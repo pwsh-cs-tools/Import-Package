@@ -10,8 +10,11 @@ param(
         -Name GraphRuntimes `
         -Value {
             param(
+                [parameter(Mandatory = $true)]
                 [string] $RuntimeIdentifier,
+                [parameter(Mandatory = $true)]
                 [System.Collections.ArrayList] $Graph,
+                [parameter(Mandatory = $true)]
                 [System.Collections.ArrayList] $Graphs
             )
         

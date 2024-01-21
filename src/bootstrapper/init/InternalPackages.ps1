@@ -32,13 +32,13 @@ param(
                         -Scope CurrentUser `
                         -Force | Out-Null
                 }
-            }
 
-            $package = Get-Package $package_name -ProviderName NuGet -ErrorAction Stop
+                $package = Get-Package $package_name -ProviderName NuGet -ErrorAction Stop
+            }
 
             $internal_packages[ $package_name ] = $package
 
-            $package_nuspec = $Bootstrapper.LocalNupkg.ReadNuspec( $package.Source )
+            $package_nuspec = $Bootstrapper.LocalNupkg.ReadNuspec( $package )
             $dependencies = If( $package_nuspec.package.metadata.dependencies.group ){
                 $package_nuspec.package.metadata.dependencies.group
             } Else {

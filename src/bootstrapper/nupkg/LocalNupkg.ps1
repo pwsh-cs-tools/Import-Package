@@ -20,9 +20,9 @@ param(
     & "$PSScriptRoot/LocalNupkg/GetStable.ps1" $local_nupkg_reader $Bootstrapper | Out-Null
     
     # $local_nupkg_reader.ListEntries()
-    & "$PSScriptRoot/LocalNupkg/ListEntries.ps1" $local_nupkg_reader | Out-Null
+    & "$PSScriptRoot/LocalNupkg/ListEntries.ps1" $local_nupkg_reader $Bootstrapper | Out-Null
     # $local_nupkg_reader.ReadNuspec()
-    & "$PSScriptRoot/LocalNupkg/ReadNuspec.ps1" $local_nupkg_reader | Out-Null
+    & "$PSScriptRoot/LocalNupkg/ReadNuspec.ps1" $local_nupkg_reader $Bootstrapper | Out-Null
 
     $Bootstrapper | Add-Member `
         -MemberType NoteProperty `

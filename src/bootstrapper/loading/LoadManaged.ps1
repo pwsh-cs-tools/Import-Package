@@ -14,9 +14,8 @@ param(
                 [bool] $Partial = $false
             )
 
-            If( [string]::IsNullOrWhiteSpace(( $Path )) ){
-                throw [System.ArgumentNullException]::new( "Path" )
-                return
+            If( [string]::IsNullOrWhiteSpace( $Path ) ){
+                Throw "Name cannot be null or whitespace"
             }
 
             try {
