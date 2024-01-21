@@ -105,8 +105,8 @@ param(
         -Name ParseRange `
         -Value {
             param(
-                $Range,
-                $Name
+                [string] $Range,
+                [string] $Name
             )
             $Range = $Range.Trim()
             
@@ -118,7 +118,7 @@ param(
             }
 
             If( [string]::IsNullOrWhiteSpace( $Range ) ){
-                Write-Warning "[Import-Package:Internals] Blank range is not a valid version range. Assuming [0.0.0, )]"
+                Write-Verbose "[Import-Package:Internals] Blank range provided. Assuming [0.0.0, )"
                 $parsed.MinVersion = "0.0.0"
                 $parsed.MinVersionInclusive = $true
                 $parsed.MaxVersion = $null
@@ -159,7 +159,7 @@ param(
                 }
     
                 If( -not $parsed.MinVersion -and -not $parsed.MaxVersion ){
-                    Write-Warning "[Import-Package:Internals] $Range is not a valid version range. Assuming [0.0.0, )]"
+                    Write-Warning "[Import-Package:Internals] $Range is not a valid version range. Assuming [0.0.0, )"
                     $parsed.MinVersion = "0.0.0"
                     $parsed.MinVersionInclusive = $true
                     $parsed.MaxVersion = $null
