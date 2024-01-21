@@ -6,7 +6,7 @@
 
     # $Bootstrapper.ReadNuspecFromNupkg()
     & "$PSScriptRoot/data/ReadNuspecFromNupkg.ps1" $Bootstrapper | Out-Null
-    
+
     # $Bootstrapper.LoadManaged()
     & "$PSScriptRoot/loading/LoadManaged.ps1" $Bootstrapper | Out-Null
 
@@ -16,6 +16,10 @@
     & "$PSScriptRoot/init/InternalPackages.ps1" $Bootstrapper | Out-Null
     # $Bootstrapper.AreLibsInitialized()
     & "$PSScriptRoot/init/AreLibsInitialized.ps1" $Bootstrapper | Out-Null
+    # $Bootstrapper.Init()
+    & "$PSScriptRoot/init/Init.ps1" $Bootstrapper | Out-Null
+
+    $Bootstrapper.Init()
 
     $Bootstrapper
 }
