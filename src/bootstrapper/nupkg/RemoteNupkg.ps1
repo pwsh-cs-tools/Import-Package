@@ -22,7 +22,7 @@ param(
     # $remote_nupkg_reader.GetPreRelease()
     & "$PSScriptRoot/RemoteNupkg/GetPreRelease.ps1" $remote_nupkg_reader | Out-Null
     # $remote_nupkg_reader.GetStable()
-    & "$PSScriptRoot/RemoteNupkg/GetStable.ps1" $remote_nupkg_reader | Out-Null
+    & "$PSScriptRoot/RemoteNupkg/GetStable.ps1" $remote_nupkg_reader $Bootstrapper | Out-Null
 
     # $remote_nupkg_reader.ListEntries()
     & "$PSScriptRoot/RemoteNupkg/ListEntries.ps1" $remote_nupkg_reader $Bootstrapper | Out-Null

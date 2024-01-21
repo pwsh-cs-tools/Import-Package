@@ -11,17 +11,13 @@ param(
     & "$PSScriptRoot/LocalNupkg/PackageManagement.ps1" $local_nupkg_reader $Bootstrapper | Out-Null
 
     # Required for Package Reader:
-
-    <#
-
+    
     # $local_nupkg_reader.GetAllVersions()
     & "$PSScriptRoot/LocalNupkg/GetAllVersions.ps1" $local_nupkg_reader $Bootstrapper | Out-Null
     # $local_nupkg_reader.GetPreRelease()
     & "$PSScriptRoot/LocalNupkg/GetPreRelease.ps1" $local_nupkg_reader | Out-Null
     # $local_nupkg_reader.GetStable()
-    & "$PSScriptRoot/LocalNupkg/GetStable.ps1" $local_nupkg_reader | Out-Null
-    
-    #>
+    & "$PSScriptRoot/LocalNupkg/GetStable.ps1" $local_nupkg_reader $Bootstrapper | Out-Null
     
     # $local_nupkg_reader.ListEntries()
     & "$PSScriptRoot/LocalNupkg/ListEntries.ps1" $local_nupkg_reader | Out-Null

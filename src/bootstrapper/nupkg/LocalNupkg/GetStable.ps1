@@ -1,7 +1,7 @@
 param(
     [parameter(Mandatory = $true)]
     [psobject]
-    $remote_nupkg_reader,
+    $local_nupkg_reader,
     [parameter(Mandatory = $true)]
     [psobject]
     $Bootstrapper
