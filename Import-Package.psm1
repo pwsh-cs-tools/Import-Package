@@ -1,6 +1,6 @@
 # Initialize - Bootstraps the nuget type system
 Write-Verbose "[Import-Package:Init] Initializing..."
-$bootstrapper = & (Resolve-Path "$PSScriptRoot\packaging.ps1")
+$bootstrapper = & (Resolve-Path "$PSScriptRoot\src\bootstrapper\packaging.ps1")
 $loaded = @{
     "NuGet.Frameworks" = "netstandard2.0"
 }
