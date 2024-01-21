@@ -11,7 +11,7 @@
         - $Bootstrapper.LocalNupkg.ListEntries()
         - $Bootstrapper.LocalNupkg.ReadNuspec()
     #>
-    & "$PSScriptRoot/data/LocalNupkg.ps1" $Bootstrapper | Out-Null
+    & "$PSScriptRoot/nupkg/LocalNupkg.ps1" $Bootstrapper | Out-Null
 
     # $Bootstrapper.LoadManaged()
     & "$PSScriptRoot/loading/LoadManaged.ps1" $Bootstrapper | Out-Null
@@ -47,12 +47,13 @@
     <#
         $Bootstrapper.SemVer:
         - $Bootstrapper.SemVer.Parse()
+        - $Bootstrapper.SemVer.ParseRange() # NuGet-spec version ranges
         - $Bootstrapper.SemVer.Compare()
     #>
-    & "$PSScriptRoot/data/SemVer.ps1" $Bootstrapper | Out-Null
+    & "$PSScriptRoot/nupkg/SemVer.ps1" $Bootstrapper | Out-Null
     
     # $Bootstrapper.NugetEndpoints
-    & "$PSScriptRoot/data/NugetEndpoints.ps1" $Bootstrapper | Out-Null
+    & "$PSScriptRoot/nupkg/NugetEndpoints.ps1" $Bootstrapper | Out-Null
     <#
         $Bootstrapper.VersionEndpoints:
         - $Bootstrapper.VersionEndpoints.SearchLatest()
@@ -60,7 +61,7 @@
         - $Bootstrapper.VersionEndpoints.GetPreRelease()
         - $Bootstrapper.VersionEndpoints.GetStable()
     #>
-    & "$PSScriptRoot/data/VersionEndpoints.ps1" $Bootstrapper | Out-Null
+    & "$PSScriptRoot/nupkg/VersionEndpoints.ps1" $Bootstrapper | Out-Null
 
     <#
         # Used for reading data from remote nupkgs (on NuGet.org)
@@ -69,8 +70,7 @@
         - $Bootstrapper.RemoteNupkg.ListEntries()
         - $Bootstrapper.RemoteNupkg.ReadNuspec()
     #>
-    & "$PSScriptRoot/data/RemoteNupkg.ps1" $Bootstrapper | Out-Null
-
+    & "$PSScriptRoot/nupkg/RemoteNupkg.ps1" $Bootstrapper | Out-Null
 
     # Refactor Bootstrapper.System after runtimeidentifiers.ps1 is refactored
 
