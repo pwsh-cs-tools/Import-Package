@@ -184,9 +184,9 @@ param(
                 $parsed.MaxVersion = $Bootstrapper.SemVer.Parse( $parsed.MaxVersion )
             }
 
-            If( $Name ){
+            $out_range = If( $Name ){
 
-                $all_versions = $Bootstrapper.VersionEndpoints.GetAllVersions( $Name )
+                $all_versions = $Bootstrapper.RemoteNupkg.GetAllVersions( $Name )
                 $all_versions = $all_versions | ForEach-Object {
                     $Bootstrapper.SemVer.Parse( $_ )
                 }
@@ -240,6 +240,23 @@ param(
             } Else {
                 $parsed
             }
+
+            If( $out_range.MinVersion -and $out_range.MaxVersion ){
+                switch( $Bootstrapper.SemVer.Compare( $out_range.MinVersion, $out_range.MaxVersion ) ){
+                    { $_ -gt 0 } {
+                        throw "Invalid version range: $Range"
+                    }
+                    0 {
+                        If( $out_range.MinVersionInclusive -and $out_range.MaxVersionInclusive ){
+                            $this.ParseRange( "[$( $out_range.MinVersion.Original )]" )
+                        } Else {
+                            throw "Invalid version range: $Range"
+                        }
+                    }
+                }
+            }
+
+            $out_range
         }
 
     $Bootstrapper | Add-Member `
