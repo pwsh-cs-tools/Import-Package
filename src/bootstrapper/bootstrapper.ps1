@@ -4,6 +4,11 @@
 
     $Bootstrapper = New-Object psobject
 
+    $Bootstrapper | Add-Member `
+        -MemberType NoteProperty `
+        -Name Root `
+        -Value (Resolve-Path "$PSScriptRoot/../..").Path
+
     <#
         # Used for reading data from local nupkgs
 
