@@ -1,7 +1,10 @@
 param(
     [parameter(Mandatory = $true)]
     [psobject]
-    $local_nupkg_reader
+    $local_nupkg_reader,
+    [parameter(Mandatory = $true)]
+    [psobject]
+    $Bootstrapper
 )
 
 & {
@@ -16,28 +19,78 @@ param(
                 -Name GetFromMain `
                 -Value {
                     param( $Name )
-                    Get-Package $Name
+                    Get-Package $Name -AllVersions -ProviderName NuGet -ErrorAction SilentlyContinue
                 }
-
-            <#
 
             $sources | Add-Member `
                 -MemberType ScriptMethod `
                 -Name GetFromCache `
                 -Value {
-                    param( $Name )
-                    
+                    param(
+                        $Name,
+                        $CachePath = (Join-Path $Bootstrapper.Root "Packages")
+                    )
+
+                    # Get all cached packages with the same name
+                    $candidate_packages = Try {
+                        Join-Path $CachePath "*" | Resolve-Path | Split-Path -Leaf | Where-Object {
+                            $leaf = $_.ToLower()
+                            $check = $Name.ToLower()
+                            $ending_tokens = "$leaf".Replace( $check, "" ) -replace "^\.",""
+                            $first_token = ($ending_tokens -split "\.")[0]
+                            Try{
+                                $null = [int]$first_token
+                                $true
+                            } Catch {
+                                $false
+                            }
+                        }
+                    } Catch { $null }
+    
+                    If( $candidate_packages ){
+    
+                        # Get all versions in the directory
+                        $candidate_versions = $candidate_packages | ForEach-Object {
+                            $leaf = $_.ToLower()
+                            $check = $Name.ToLower()
+                            # Exact replace (.Replace()) followed by regex-replace (-replace)
+                            "$leaf".Replace( $check, "" ) -replace "^\.",""
+                        }
+        
+                        $candidate_versions = [string[]] $candidate_versions
+    
+                        [Array]::Sort[string]( $candidate_versions, [System.Comparison[string]]({
+                            param($x, $y)
+                            $x = $Bootstrapper.SemVer.Parse( $x )
+                            $y = $Bootstrapper.SemVer.Parse( $y )
+        
+                            $Bootstrapper.SemVer.Compare( $x, $y )
+                        }))
+
+                        $candidate_versions | ForEach-Object {
+                            $candidate = Join-Path $CachePath "$Name.$_" "$Name.$_.nupkg"
+                            If( Test-Path $candidate ){
+                                New-Object psobject -Property @{
+                                    Name = $Name
+                                    Version = $_
+                                    Source = $candidate
+                                }
+                            }
+                        }
+                    }
                 }
 
             $sources | Add-Member `
                 -MemberType ScriptMethod `
                 -Name GetFromPatches `
                 -Value {
-                    param( $Name )
-                    
-                }
+                    param(
+                        $Name,
+                        $PatchPath = (Join-Path $Bootstrapper.Root "Patches")
+                    )
 
-            #>
+                    $this.GetFromCache( $Name, $PatchPath )
+                }
 
             $sources
         })
