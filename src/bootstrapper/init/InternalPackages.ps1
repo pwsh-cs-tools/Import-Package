@@ -40,7 +40,7 @@ param(
 
             $internal_packages[ $package_name ] = $package
 
-            $package_nuspec = $Bootstrapper.ReadNuspecFromNupkg( $package.Source )
+            $package_nuspec = $Bootstrapper.LocalNupkg.ReadNuspec( $package.Source )
             $dependencies = If( $package_nuspec.package.metadata.dependencies.group ){
                 $package_nuspec.package.metadata.dependencies.group
             } Else {

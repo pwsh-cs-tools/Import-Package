@@ -21,7 +21,7 @@ param(
     }
 
     $Bootstrapper | Add-Member `
-        -MemberType ScriptProperty `
+        -MemberType NoteProperty `
         -Name Nuget `
         -Value $nuget
 }
