@@ -52,13 +52,22 @@ param(
                 -Name GetFromCache `
                 -Value {
                     param(
-                        $Name,
+                        [string] $Name,
                         $CachePath = (Join-Path $Bootstrapper.Root "Packages")
                     )
 
+                    If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                        Throw "Name cannot be null or whitespace"
+                    }
+
                     # Get all cached packages with the same name
+                    $cache_files = $CachePath | ForEach-Object {
+                        Try {
+                            Join-Path $_ "*" | Resolve-Path
+                        } Catch { $null }
+                    }
                     $candidate_packages = Try {
-                        Join-Path $CachePath "*" | Resolve-Path | Split-Path -Leaf | Where-Object {
+                        $cache_files | Split-Path -Leaf | Where-Object {
                             $leaf = $_.ToLower()
                             $check = $Name.ToLower()
                             $ending_tokens = "$leaf".Replace( $check, "" ) -replace "^\.",""
@@ -93,12 +102,16 @@ param(
                         }))
 
                         $candidate_versions | ForEach-Object {
-                            $candidate = Join-Path $CachePath "$Name.$_" "$Name.$_.nupkg"
-                            If( Test-Path $candidate ){
-                                New-Object psobject -Property @{
-                                    Name = $Name
-                                    Version = $_
-                                    Source = $candidate
+                            $iter_version = $_
+                            $candidates = $CachePath | ForEach-Object { Join-Path $_ "$Name.$iter_version" "$Name.$iter_version.nupkg" }
+                            $candidates | ForEach-Object {
+                                $candidate = $_
+                                If( Test-Path $candidate ){
+                                    New-Object psobject -Property @{
+                                        Name = $Name
+                                        Version = $iter_version
+                                        Source = $candidate
+                                    }
                                 }
                             }
                         }
