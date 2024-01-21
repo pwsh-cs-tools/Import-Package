@@ -14,7 +14,7 @@ param(
         -MemberType ScriptProperty `
         -Name InternalLibraries `
         -Value {
-            @{
+            [ordered]@{
                 "Nuget.Frameworks" = (& {
                     Try{ [NuGet.Frameworks.FrameworkConstants+FrameworkIdentifiers] } Catch { [int]0 }
                 })
