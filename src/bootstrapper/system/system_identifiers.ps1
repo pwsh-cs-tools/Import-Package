@@ -10,9 +10,9 @@ param(
     & "$PSScriptRoot/GraphRuntimes.ps1" $system_identifiers
     # $system_identifiers.Framework
     & "$PSScriptRoot/Framework.ps1" $system_identifiers $Bootstrapper
-    # $system_identifiers.Runtimes
+    # $system_identifiers.Runtimes and $system_identifiers.Runtime
     & "$PSScriptRoot/Runtimes.ps1" $system_identifiers
-    # $system_identifiers.Runtimes
+    # $system_identifiers.RuntimeGraphs
     & "$PSScriptRoot/RuntimeGraphs.ps1" $system_identifiers
 
     $Bootstrapper | Add-Member `
