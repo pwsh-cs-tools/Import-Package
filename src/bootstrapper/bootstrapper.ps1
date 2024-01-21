@@ -10,6 +10,14 @@
         -Value (Resolve-Path "$PSScriptRoot/../..").Path
 
     <#
+        $Bootstrapper.SemVer:
+        - $Bootstrapper.SemVer.Parse()
+        - $Bootstrapper.SemVer.ParseRange() # NuGet-spec version ranges
+        - $Bootstrapper.SemVer.Compare()
+    #>
+    & "$PSScriptRoot/nupkg/SemVer.ps1" $Bootstrapper | Out-Null
+
+    <#
         # Used for reading data from local nupkgs
 
         $Bootstrapper.LocalNupkg:
@@ -48,14 +56,6 @@
         - $Bootstrapper.MiniZip.GetRemoteZipEntries()
     #>
     & "$PSScriptRoot/package_apis/MiniZip.ps1" $Bootstrapper | Out-Null
-
-    <#
-        $Bootstrapper.SemVer:
-        - $Bootstrapper.SemVer.Parse()
-        - $Bootstrapper.SemVer.ParseRange() # NuGet-spec version ranges
-        - $Bootstrapper.SemVer.Compare()
-    #>
-    & "$PSScriptRoot/nupkg/SemVer.ps1" $Bootstrapper | Out-Null
 
     <#
         # Used for reading data from remote nupkgs (on NuGet.org)
