@@ -4,8 +4,14 @@
 
     $Bootstrapper = New-Object psobject
 
-    # $Bootstrapper.ReadNuspecFromNupkg()
-    & "$PSScriptRoot/data/ReadNuspecFromNupkg.ps1" $Bootstrapper | Out-Null
+    <#
+        # Used for reading data from local nupkgs
+
+        $Bootstrapper.LocalNupkg:
+        - $Bootstrapper.LocalNupkg.ListEntries()
+        - $Bootstrapper.LocalNupkg.ReadNuspec()
+    #>
+    & "$PSScriptRoot/data/LocalNupkg.ps1" $Bootstrapper | Out-Null
 
     # $Bootstrapper.LoadManaged()
     & "$PSScriptRoot/loading/LoadManaged.ps1" $Bootstrapper | Out-Null

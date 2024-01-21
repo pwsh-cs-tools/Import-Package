@@ -5,9 +5,29 @@ param(
 )
 
 & {
-    $Bootstrapper | Add-Member `
+    $local_nupkg_reader = New-Object psobject
+    
+    $local_nupkg_reader | Add-Member `
         -MemberType ScriptMethod `
-        -Name ReadNuspecFromNupkg `
+        -Name ListEntries `
+        -Value {
+            param(
+                [parameter(Mandatory = $true)]
+                [string]
+                $Path
+            )
+            $nupkg = [System.IO.Compression.ZipFile]::OpenRead( $path )
+
+            $nupkg.Entries | ForEach-Object {
+                $_.FullName
+            }
+
+            $nupkg.Dispose()
+        }
+
+    $local_nupkg_reader | Add-Member `
+        -MemberType ScriptMethod `
+        -Name ReadNuspec `
         -Value {
             param(
                 [parameter(Mandatory = $true)]
@@ -48,4 +68,9 @@ param(
             $stream.Close()
             $nupkg.Dispose()
         }
+
+    $Bootstrapper | Add-Member `
+        -MemberType NoteProperty `
+        -Name LocalNupkg `
+        -Value $local_nupkg_reader
 }
