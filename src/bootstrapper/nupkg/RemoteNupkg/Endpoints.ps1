@@ -1,13 +1,13 @@
 param(
     [parameter(Mandatory = $true)]
     [psobject]
-    $Bootstrapper
+    $remote_nupkg_reader
 )
 
 & {
-    $Bootstrapper | Add-Member `
+    $remote_nupkg_reader | Add-Member `
         -MemberType NoteProperty `
-        -Name NugetEndpoints `
+        -Name Endpoints `
         -Value (& {
             $apis = Invoke-WebRequest https://api.nuget.org/v3/index.json
             ConvertFrom-Json $apis

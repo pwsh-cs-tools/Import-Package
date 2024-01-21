@@ -7,80 +7,27 @@ param(
 & {
     $remote_nupkg_reader = New-Object psobject
 
-    $remote_nupkg_reader | Add-Member `
-        -MemberType ScriptMethod `
-        -Name GetDownloadUrl `
-        -Value {
-            param(
-                [parameter(Mandatory = $true)]
-                [string]
-                $Name,
-                [string] $Verion
-            )
+    # $remote_nupkg_reader.Endpoints
+    & "$PSScriptRoot/RemoteNupkg/Endpoints.ps1" $remote_nupkg_reader | Out-Null
+    # $remote_nupkg_reader.GetDownloadUrl()
+    & "$PSScriptRoot/RemoteNupkg/GetDownloadUrl.ps1" $remote_nupkg_reader | Out-Null
 
-            If( $Version -eq $null ) {
-                $Version = $Bootstrapper.VersionEndpoints.GetStable( $Name )
-            }
+    # $remote_nupkg_reader.SearchLatest()
+    & "$PSScriptRoot/RemoteNupkg/SearchLatest.ps1" $remote_nupkg_reader | Out-Null
 
-            $resource = $Bootstrapper.NugetEndpoints.resources | Where-Object {
-                $_."@type" -eq "PackageBaseAddress/3.0.0"
-            }
-            $id = $resource."@id"
+    # Required for Package Reader:
 
-            @(
-                $id,
-                $Name, "/",
-                "$Version", "/",
-                "$Name.$Version.nupkg"
-            ) -join ""
-        }
-    
-    $remote_nupkg_reader | Add-Member `
-        -MemberType ScriptMethod `
-        -Name ListEntries `
-        -Value {
-            param(
-                [parameter(Mandatory = $true)]
-                [string]
-                $Name,
-                [string] $Verion
-            )
+    # $remote_nupkg_reader.GetAllVersions()
+    & "$PSScriptRoot/RemoteNupkg/GetAllVersions.ps1" $remote_nupkg_reader $Bootstrapper | Out-Null
+    # $remote_nupkg_reader.GetPreRelease()
+    & "$PSScriptRoot/RemoteNupkg/GetPreRelease.ps1" $remote_nupkg_reader | Out-Null
+    # $remote_nupkg_reader.GetStable()
+    & "$PSScriptRoot/RemoteNupkg/GetStable.ps1" $remote_nupkg_reader | Out-Null
 
-            $url = $this.GetDownloadUrl( $Name, $Version )
-
-            $Bootstrapper.MiniZip.GetRemoteZipEntries( $url )
-        }
-
-    $remote_nupkg_reader | Add-Member `
-        -MemberType ScriptMethod `
-        -Name ReadNuspec `
-        -Value {
-            param(
-                [parameter(Mandatory = $true)]
-                [string]
-                $Name,
-                [string] $Verion
-            )
-
-            If( $Version -eq $null ) {
-                $Version = $Bootstrapper.VersionEndpoints.GetStable( $Name )
-            }
-
-            $resource = $Bootstrapper.NugetEndpoints.resources | Where-Object {
-                $_."@type" -eq "PackageBaseAddress/3.0.0"
-            }
-            $id = $resource."@id"
-
-            $url = @(
-                $id,
-                $Name, "/",
-                "$Version", "/",
-                "$Name.nuspec"
-            ) -join ""
-
-            $result = Invoke-WebRequest $url
-            [xml]$result.Content
-        }
+    # $remote_nupkg_reader.ListEntries()
+    & "$PSScriptRoot/RemoteNupkg/ListEntries.ps1" $remote_nupkg_reader $Bootstrapper | Out-Null
+    # $remote_nupkg_reader.ReadNuspec()
+    & "$PSScriptRoot/RemoteNupkg/ReadNuspec.ps1" $remote_nupkg_reader | Out-Null
 
     $Bootstrapper | Add-Member `
         -MemberType NoteProperty `

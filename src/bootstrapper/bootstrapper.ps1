@@ -51,22 +51,17 @@
         - $Bootstrapper.SemVer.Compare()
     #>
     & "$PSScriptRoot/nupkg/SemVer.ps1" $Bootstrapper | Out-Null
-    
-    # $Bootstrapper.NugetEndpoints
-    & "$PSScriptRoot/nupkg/NugetEndpoints.ps1" $Bootstrapper | Out-Null
-    <#
-        $Bootstrapper.VersionEndpoints:
-        - $Bootstrapper.VersionEndpoints.SearchLatest()
-        - $Bootstrapper.VersionEndpoints.GetAllVersions()
-        - $Bootstrapper.VersionEndpoints.GetPreRelease()
-        - $Bootstrapper.VersionEndpoints.GetStable()
-    #>
-    & "$PSScriptRoot/nupkg/VersionEndpoints.ps1" $Bootstrapper | Out-Null
 
     <#
         # Used for reading data from remote nupkgs (on NuGet.org)
 
         $Bootstrapper.RemoteNupkg:
+        - $Bootstrapper.RemoteNupkg.Endpoints
+        - $Bootstrapper.RemoteNupkg.GetDownloadUrl()
+        - $Bootstrapper.RemoteNupkg.GetAllVersions()
+        - $Bootstrapper.RemoteNupkg.GetPreRelease()
+        - $Bootstrapper.RemoteNupkg.GetStable()
+        - $Bootstrapper.RemoteNupkg.SearchLatest()
         - $Bootstrapper.RemoteNupkg.ListEntries()
         - $Bootstrapper.RemoteNupkg.ReadNuspec()
     #>
