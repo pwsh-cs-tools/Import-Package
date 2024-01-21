@@ -6,7 +6,7 @@ param(
 
 & {
     ## Get all NuGet and Microsoft Supported RIDs from Microsoft.NETCore.Platforms
-    $package = Get-Package "Microsoft.NETCore.Platforms" -ProviderName NuGet -ErrorAction SilentlyContinue
+    $package = $Bootstrapper.LocalNupkg.PackageManagement.SelectBest( "Microsoft.NETCore.Platforms" )
 
     if( -not $package ){
         Try {
