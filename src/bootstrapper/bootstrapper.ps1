@@ -75,8 +75,10 @@
     <#
         $Bootstrapper.System:
         - $Bootstrapper.System.Framework
+        - $Bootstrapper.System.GraphRuntimes()
         - $Bootstrapper.System.Runtimes
         - $Bootstrapper.System.Runtime
+        - $Bootstrapper.System.RuntimeGraphs
     #>
     & "$PSScriptRoot/system/system_identifiers.ps1" $Bootstrapper | Out-Null
 
