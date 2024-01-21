@@ -11,12 +11,12 @@ param(
 
     <#
 
-    # $remote_nupkg_reader.GetAllVersions()
-    & "$PSScriptRoot/LocalNupkg/GetAllVersions.ps1" $remote_nupkg_reader $Bootstrapper | Out-Null
-    # $remote_nupkg_reader.GetPreRelease()
-    & "$PSScriptRoot/LocalNupkg/GetPreRelease.ps1" $remote_nupkg_reader | Out-Null
-    # $remote_nupkg_reader.GetStable()
-    & "$PSScriptRoot/LocalNupkg/GetStable.ps1" $remote_nupkg_reader | Out-Null
+    # $local_nupkg_reader.GetAllVersions()
+    & "$PSScriptRoot/LocalNupkg/GetAllVersions.ps1" $local_nupkg_reader $Bootstrapper | Out-Null
+    # $local_nupkg_reader.GetPreRelease()
+    & "$PSScriptRoot/LocalNupkg/GetPreRelease.ps1" $local_nupkg_reader | Out-Null
+    # $local_nupkg_reader.GetStable()
+    & "$PSScriptRoot/LocalNupkg/GetStable.ps1" $local_nupkg_reader | Out-Null
     
     #>
     
