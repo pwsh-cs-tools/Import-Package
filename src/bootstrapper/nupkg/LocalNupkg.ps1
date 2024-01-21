@@ -7,6 +7,9 @@ param(
 & {
     $local_nupkg_reader = New-Object psobject
 
+    # $local_nupkg_reader.PackageManagement
+    & "$PSScriptRoot/LocalNupkg/PackageManagement.ps1" $local_nupkg_reader | Out-Null
+
     # Required for Package Reader:
 
     <#
