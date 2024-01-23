@@ -15,16 +15,10 @@ param(
             $sources = New-Object psobject
 
             $sources | Add-Member `
-                -MemberType ScriptMethod `
-                -Name GetFromMain `
-                -Value {
-                    param(
-                        [string] $Name
-                    )
-
-                    If( [string]::IsNullOrWhiteSpace( $Name ) ){
-                        Throw "Name cannot be null or whitespace"
-                    }
+                -MemberType NoteProperty `
+                -Name Directories `
+                -Value (& {
+                    $directories = @{}
 
                     # see: https://github.com/OneGet/oneget/blob/WIP/src/Microsoft.PackageManagement/Implementation/PackageManagementService.cs#L149-L195
                     $basepaths = @{}
@@ -37,9 +31,30 @@ param(
                         $basepaths.System = [Environment]::GetFolderPath( "ProgramFiles" )
                     }
 
+                    $directories.User = Join-Path $basepaths.User "PackageManagement\NuGet\Packages"
+                    $directories.System = Join-Path $basepaths.System "PackageManagement\NuGet\Packages"
+                    
+                    $directories.Fallback = Join-Path $Bootstrapper.Root "Packages"
+                    $directories.Patches = Join-Path $Bootstrapper.Root "Patches"
+
+                    $directories
+                })
+
+            $sources | Add-Member `
+                -MemberType ScriptMethod `
+                -Name GetFromMain `
+                -Value {
+                    param(
+                        [string] $Name
+                    )
+
+                    If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                        Throw "Name cannot be null or whitespace"
+                    }
+
                     $cache_paths = @(
-                        Join-Path $basepaths.User "PackageManagement\NuGet\Packages"
-                        Join-Path $basepaths.System "PackageManagement\NuGet\Packages"
+                        $this.Directories.User,
+                        $this.Directories.System
                     )
 
                     $this.GetFromCache( $Name, $cache_paths )
@@ -53,7 +68,7 @@ param(
                 -Value {
                     param(
                         [string] $Name,
-                        $CachePath = (Join-Path $Bootstrapper.Root "Packages")
+                        $CachePath = $this.Directories.Fallback
                     )
 
                     If( [string]::IsNullOrWhiteSpace( $Name ) ){
@@ -124,7 +139,7 @@ param(
                 -Value {
                     param(
                         [string] $Name,
-                        $PatchPath = (Join-Path $Bootstrapper.Root "Patches")
+                        $PatchPath = $this.Directories.Patches
                     )
 
                     If( [string]::IsNullOrWhiteSpace( $Name ) ){
