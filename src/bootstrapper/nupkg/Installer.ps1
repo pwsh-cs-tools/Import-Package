@@ -62,9 +62,6 @@ param(
                 }
             }
 
-            Write-Host $Destination $Name $Version
-            pause;
-
             switch( $Destination ){
                 "PackageManagement" {
                     $package = $Bootstrapper.LocalNupkg.PackageManagement.GetFromMain( $Name, $Version )
