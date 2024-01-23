@@ -47,7 +47,7 @@
         - $Bootstrapper.RemoteNupkg.ReadNuspec()
     #>
     & "$PSScriptRoot/nupkg/RemoteNupkg.ps1" $Bootstrapper | Out-Null
-    # $Bootstrapper.Install()
+    # $Bootstrapper.Install() and $Bootstrapper.Ensure()
     & "$PSScriptRoot/nupkg/Installer.ps1" $Bootstrapper | Out-Null
 
     # $Bootstrapper.LoadManaged()
@@ -64,7 +64,11 @@
     # $Bootstrapper.Init()
     & "$PSScriptRoot/init/Init.ps1" $Bootstrapper | Out-Null
 
-    $Bootstrapper.Init()
+    If( $Bootstrapper.AreLibsInitialized() -eq $false ){
+        $Bootstrapper.Init()
+    } Else {
+        Write-Warning "[Import-Package:Internals] Import-Package may have already been initialized."
+    }
 
     <#
         # Used for reading framework information from nupkgs and nuspecs
