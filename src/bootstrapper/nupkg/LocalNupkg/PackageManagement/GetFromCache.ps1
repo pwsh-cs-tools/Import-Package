@@ -14,7 +14,8 @@ param(
         -Value {
             param(
                 [string] $Name,
-                $CachePath = $this.Directories.Fallback
+                [string] $Version,
+                $CachePath = $this.Directories.Cache
             )
 
             If( [string]::IsNullOrWhiteSpace( $Name ) ){
@@ -61,6 +62,14 @@ param(
 
                     $Bootstrapper.SemVer.Compare( $x, $y )
                 }))
+
+                $candidate_versions = If( [string]::IsNullOrWhiteSpace( $Version ) ){
+                    $candidate_versions
+                } Else {
+                    $candidate_versions | Where-Object {
+                        $Bootstrapper.SemVer.Compare( $Bootstrapper.SemVer.Parse( $_ ), $Bootstrapper.SemVer.Parse( $Version ) ) -eq 0
+                    }
+                }
 
                 $candidate_versions | ForEach-Object {
                     $iter_version = $_

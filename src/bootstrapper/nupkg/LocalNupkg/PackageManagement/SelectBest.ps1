@@ -21,9 +21,9 @@ param(
                 Throw "[Import-Package:Internals(PackageManagement.SelectBest)] Name cannot be null or whitespace"
             }
 
-            $main = $this.GetFromMain( $Name )
-            $cache = $this.GetFromCache( $Name )
-            $patch = $this.GetFromPatches( $Name )
+            $main = $this.GetFromMain( $Name, $Version )
+            $cache = $this.GetFromCache( $Name, $Version )
+            $patch = $this.GetFromPatches( $Name, $Version )
 
             If( [string]::IsNullOrWhiteSpace( $Version ) ){
                 $combined = New-Object System.Collections.ArrayList

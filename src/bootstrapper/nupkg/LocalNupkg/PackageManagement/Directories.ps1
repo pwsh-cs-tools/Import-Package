@@ -28,7 +28,7 @@ param(
             $directories.User = Join-Path $basepaths.User "PackageManagement\NuGet\Packages"
             $directories.System = Join-Path $basepaths.System "PackageManagement\NuGet\Packages"
             
-            $directories.Fallback = Join-Path $Bootstrapper.Root "Packages"
+            $directories.Cache = Join-Path $Bootstrapper.Root "Packages"
             $directories.Patches = Join-Path $Bootstrapper.Root "Patches"
 
             $directories

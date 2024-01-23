@@ -10,7 +10,8 @@ param(
         -Name GetFromMain `
         -Value {
             param(
-                [string] $Name
+                [string] $Name,
+                [string] $Version
             )
 
             If( [string]::IsNullOrWhiteSpace( $Name ) ){
@@ -22,7 +23,7 @@ param(
                 $this.Directories.System
             )
 
-            $this.GetFromCache( $Name, $cache_paths )
+            $this.GetFromCache( $Name, $Version, $cache_paths )
 
             # Get-Package $Name -AllVersions -ProviderName NuGet -ErrorAction SilentlyContinue
         }

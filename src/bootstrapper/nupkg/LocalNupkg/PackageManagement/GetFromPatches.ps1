@@ -11,6 +11,7 @@ param(
         -Value {
             param(
                 [string] $Name,
+                [string] $Version,
                 $PatchPath = $this.Directories.Patches
             )
 
@@ -18,6 +19,6 @@ param(
                 Throw "[Import-Package:Internals(PackageManagement.GetFromPatches)] Name cannot be null or whitespace"
             }
 
-            $this.GetFromCache( $Name, $PatchPath )
+            $this.GetFromCache( $Name, $Version, $PatchPath )
         }
 }
