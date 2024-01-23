@@ -6,25 +6,7 @@ param(
 
 & {
     ## Get all NuGet and Microsoft Supported RIDs from Microsoft.NETCore.Platforms
-    $package = $Bootstrapper.LocalNupkg.PackageManagement.SelectBest( "Microsoft.NETCore.Platforms" )
-
-    if( -not $package ){
-        Try {
-            Install-Package "Microsoft.NETCore.Platforms" `
-                -ProviderName NuGet `
-                -SkipDependencies `
-                -Force `
-                -ErrorAction Stop | Out-Null
-        } Catch {        
-            Install-Package "Microsoft.NETCore.Platforms" `
-                -ProviderName NuGet `
-                -SkipDependencies `
-                -Scope CurrentUser `
-                -Force | Out-Null
-        }
-
-        $package = Get-Package "Microsoft.NETCore.Platforms" -ProviderName NuGet -ErrorAction Stop
-    }
+    $package = $Bootstrapper.Ensure( "Microsoft.NETCore.Platforms" )
 
     $system_identifiers | Add-Member `
         -MemberType NoteProperty `

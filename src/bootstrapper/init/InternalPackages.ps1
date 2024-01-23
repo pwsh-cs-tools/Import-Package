@@ -15,26 +15,7 @@ param(
     while( $i -lt $internal_libraries.Count ){
         $package_name = $internal_libraries[ $i ]
         If( -not( $internal_packages.ContainsKey( $package_name ) ) ){
-            $package = $Bootstrapper.LocalNupkg.PackageManagement.SelectBest( $package_name )
-            # We no longer autoupdate the internal packages on the init process
-
-            If( -not $package ){
-                Try {
-                    Install-Package $package_name `
-                        -ProviderName NuGet `
-                        -SkipDependencies `
-                        -Force `
-                        -ErrorAction Stop | Out-Null
-                } Catch {        
-                    Install-Package $package_name `
-                        -ProviderName NuGet `
-                        -SkipDependencies `
-                        -Scope CurrentUser `
-                        -Force | Out-Null
-                }
-
-                $package = Get-Package $package_name -ProviderName NuGet -ErrorAction Stop
-            }
+            $package = $Bootstrapper.Ensure( $package_name )
 
             $internal_packages[ $package_name ] = $package
 
