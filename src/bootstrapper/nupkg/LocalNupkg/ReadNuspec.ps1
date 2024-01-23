@@ -21,18 +21,20 @@ param(
                 If( [string]::IsNullOrWhiteSpace( $Name.Name ) ){
                     Throw "[Import-Package:Internals(LocalNupkg.ReadNuspec)] Name cannot be null or whitespace"
                 } Else {
-                    If( $Name.Version -eq $null ) {
-                        $Version = $this.GetStable( $Name.Name )
-                    } Else {
-                        $Version = $Name.Version
-                    }
                     $Name
                 }
             } ElseIf( [string]::IsNullOrWhiteSpace( $Name ) ){
                 Throw "[Import-Package:Internals(LocalNupkg.ReadNuspec)] Name cannot be null or whitespace"
             } Else {
-                If( $Version -eq $null ) {
-                    $Version = $this.GetStable( $Name )
+                $Version = If( [string]::IsNullOrWhiteSpace( $Version ) ){
+                    $latest_stable = $this.GetStable( $Name )
+                    If( [string]::IsNullOrWhiteSpace( $latest_stable ) ){
+                        $this.GetPreRelease( $Name )
+                    } Else {
+                        $latest_stable
+                    }
+                } Else {
+                    $Version
                 }
 
                 $Bootstrapper.LocalNupkg.PackageManagement.SelectBest( $Name, $Version )

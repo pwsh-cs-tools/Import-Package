@@ -18,8 +18,15 @@ param(
                 Throw "[Import-Package:Internals(RemoteNupkg.GetDownloadUrl)] Name cannot be null or whitespace"
             }
 
-            If( $Version -eq $null ) {
-                $Version = $this.GetStable( $Name )
+            $Version = If( [string]::IsNullOrWhiteSpace( $Version ) ){
+                $latest_stable = $this.GetStable( $Name )
+                If( [string]::IsNullOrWhiteSpace( $latest_stable ) ){
+                    $this.GetPreRelease( $Name )
+                } Else {
+                    $latest_stable
+                }
+            } Else {
+                $Version
             }
 
             $resource = $this.Endpoints.resources | Where-Object {
