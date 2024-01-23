@@ -18,7 +18,7 @@ param(
             )
 
             If( [string]::IsNullOrWhiteSpace( $Name ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(PackageManagement.SelectBest)] Name cannot be null or whitespace"
             }
 
             $main = $this.GetFromMain( $Name )

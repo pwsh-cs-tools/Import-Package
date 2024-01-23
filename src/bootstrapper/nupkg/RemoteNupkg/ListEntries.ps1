@@ -18,7 +18,7 @@ param(
             )
 
             If( [string]::IsNullOrWhiteSpace( $Name ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(RemoteNupkg.ListEntries)] Name cannot be null or whitespace"
             }
 
             $url = $this.GetDownloadUrl( $Name, $Version )

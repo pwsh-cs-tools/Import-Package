@@ -19,7 +19,7 @@ param(
 
             $package = If( $Name.GetType() -ne [string] ){
                 If( [string]::IsNullOrWhiteSpace( $Name.Name ) ){
-                    Throw "Name cannot be null or whitespace"
+                    Throw "[Import-Package:Internals(LocalNupkg.ReadNuspec)] Name cannot be null or whitespace"
                 } Else {
                     If( $Name.Version -eq $null ) {
                         $Version = $this.GetStable( $Name.Name )
@@ -29,7 +29,7 @@ param(
                     $Name
                 }
             } ElseIf( [string]::IsNullOrWhiteSpace( $Name ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(LocalNupkg.ReadNuspec)] Name cannot be null or whitespace"
             } Else {
                 If( $Version -eq $null ) {
                     $Version = $this.GetStable( $Name )
@@ -58,9 +58,9 @@ param(
             If ( -not( $nuspec ) ){
                 $nuspec = $nuspecs | Select-Object -First 1
                 If( $nuspec ){
-                    Write-Warning "Improper .nuspec used for $nupkg_name`: $( $nuspec.FullName )"
+                    Write-Warning "[Import-Package:Internals(LocalNupkg.ReadNuspec)] Improper .nuspec used for $nupkg_name`: $( $nuspec.FullName )"
                 } Else {
-                    Throw ".nuspec file not found for $nupkg_name`!"
+                    Throw "[Import-Package:Internals(LocalNupkg.ReadNuspec)] .nuspec file not found for $nupkg_name`!"
                     return
                 }
             }

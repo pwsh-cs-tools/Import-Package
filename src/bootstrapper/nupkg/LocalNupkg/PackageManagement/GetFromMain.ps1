@@ -14,7 +14,7 @@ param(
             )
 
             If( [string]::IsNullOrWhiteSpace( $Name ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(PackageManagement.GetFromMain)] Name cannot be null or whitespace"
             }
 
             $cache_paths = @(

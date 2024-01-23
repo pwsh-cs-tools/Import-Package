@@ -22,7 +22,7 @@ param(
             If( $Name -eq $results.data[0].id ){
                 $results.data[0].version
             } else {
-                Write-Warning "Unable to find latest version of $Name via NuGet Search API"
+                Write-Warning "[Import-Package:Internals(RemoteNupkg.SearchLatest)] Unable to find latest version of $Name via NuGet Search API"
             }
         }
 }

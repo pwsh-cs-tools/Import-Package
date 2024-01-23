@@ -19,7 +19,7 @@ param(
 
             $package = If( $Name.GetType() -ne [string] ){
                 If( [string]::IsNullOrWhiteSpace( $Name.Name ) ){
-                    Throw "Name cannot be null or whitespace"
+                    Throw "[Import-Package:Internals(LocalNupkg.ListEntries)] Name cannot be null or whitespace"
                 } Else {
                     If( $Name.Version -eq $null ) {
                         $Version = $this.GetStable( $Name.Name )
@@ -29,7 +29,7 @@ param(
                     $Name
                 }
             } ElseIf( [string]::IsNullOrWhiteSpace( $Name ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(LocalNupkg.ListEntries)] Name cannot be null or whitespace"
             } Else {
                 If( $Version -eq $null ) {
                     $Version = $this.GetStable( $Name )

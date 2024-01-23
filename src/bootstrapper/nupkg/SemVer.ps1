@@ -17,7 +17,7 @@ param(
             )
             
             If( [string]::IsNullOrWhiteSpace( $semVerString ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(SemVer.Parse)] Name cannot be null or whitespace"
             }
 
             $semVerParts = $semVerString -split '[-\+]'
@@ -124,7 +124,7 @@ param(
             }
 
             If( [string]::IsNullOrWhiteSpace( $Range ) ){
-                Write-Verbose "[Import-Package:Internals] Blank range provided. Assuming [0.0.0, )"
+                Write-Verbose "[Import-Package:Internals(SemVer.ParseRange)] Blank range provided. Assuming [0.0.0, )"
                 $parsed.MinVersion = "0.0.0"
                 $parsed.MinVersionInclusive = $true
                 $parsed.MaxVersion = $null
@@ -139,7 +139,7 @@ param(
                         $parsed.MaxVersionInclusive = $true
                         If( $versions[0].StartsWith("(") -or $versions[0].EndsWith(")") ) {
                             If( $parsed.MinVersion ){
-                                Write-Warning "[Import-Package:Internals] $Range is not a valid version range. Assuming exact version: [$( $parsed.MinVersion )]"
+                                Write-Warning "[Import-Package:Internals(SemVer.ParseRange)] $Range is not a valid version range. Assuming exact version: [$( $parsed.MinVersion )]"
                             }
                         }
                     } else {
@@ -165,7 +165,7 @@ param(
                 }
     
                 If( -not $parsed.MinVersion -and -not $parsed.MaxVersion ){
-                    Write-Warning "[Import-Package:Internals] $Range is not a valid version range. Assuming [0.0.0, )"
+                    Write-Warning "[Import-Package:Internals(SemVer.ParseRange)] $Range is not a valid version range. Assuming [0.0.0, )"
                     $parsed.MinVersion = "0.0.0"
                     $parsed.MinVersionInclusive = $true
                     $parsed.MaxVersion = $null
@@ -173,12 +173,12 @@ param(
                 }
     
                 If( $parsed.MaxVersionInclusive -and -not $parsed.MaxVersion ){
-                    Write-Warning "[Import-Package:Internals] $Range is not a valid version range. Assuming unbounded maximum version."
+                    Write-Warning "[Import-Package:Internals(SemVer.ParseRange)] $Range is not a valid version range. Assuming unbounded maximum version."
                     $parsed.MaxVersionInclusive = $false
                 }
     
                 If( $parsed.MinVersionInclusive -and -not $parsed.MinVersion ){
-                    Write-Warning "[Import-Package:Internals] $Range is not a valid version range. Assuming unbounded minimum version."
+                    Write-Warning "[Import-Package:Internals(SemVer.ParseRange)] $Range is not a valid version range. Assuming unbounded minimum version."
                     $parsed.MinVersionInclusive = $false
                 }
             }
@@ -250,13 +250,13 @@ param(
             If( $out_range.MinVersion -and $out_range.MaxVersion ){
                 switch( $this.Compare( $out_range.MinVersion, $out_range.MaxVersion ) ){
                     { $_ -gt 0 } {
-                        throw "Invalid version range: $Range"
+                        Throw "[Import-Package:Internals(SemVer.ParseRange)] Invalid version range: $Range"
                     }
                     0 {
                         If( $out_range.MinVersionInclusive -and $out_range.MaxVersionInclusive ){
                             $this.ParseRange( "[$( $out_range.MinVersion.Original )]" )
                         } Else {
-                            throw "Invalid version range: $Range"
+                            Throw "[Import-Package:Internals(SemVer.ParseRange)] Invalid version range: $Range"
                         }
                     }
                 }

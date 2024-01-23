@@ -18,7 +18,7 @@ param(
             )
 
             If( [string]::IsNullOrWhiteSpace( $Name ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(PackageManagement.GetFromCache)] Name cannot be null or whitespace"
             }
 
             # Get all cached packages with the same name

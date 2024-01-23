@@ -24,16 +24,16 @@ public static extern IntPtr dlopen(string path, int flags);
                         If( -not (Test-Path $CopyTo -PathType Container) ){
                             New-Item -ItemType Directory -Path $CopyTo -Force
                         }
-                        Write-Verbose "Loading native dll from path '$CopyTo' (copying from '$Path')."
+                        Write-Verbose "[Import-Package:Internals(LoadNative)] Loading native dll from path '$CopyTo' (copying from '$Path')."
                         $end_path = "$CopyTo\$($Path | Split-Path -Leaf)"
                         If( Test-Path $end_path -PathType Leaf ){
-                            Write-Verbose "$CopyTo is already present and loaded. Native dll not copied - This could cause version conflicts"
+                            Write-Verbose "[Import-Package:Internals(LoadNative)] $CopyTo is already present and loaded. Native dll not copied - This could cause version conflicts"
                         } Else {
                             Copy-Item $Path $CopyTo -Force -ErrorAction SilentlyContinue | Out-Null
                         }
                         $Path = $end_path
                     } Else {
-                        Write-Verbose "Loading native dll from path '$Path'."
+                        Write-Verbose "[Import-Package:Internals(LoadNative)] Loading native dll from path '$Path'."
                     }
                     $lib_handle = [System.IntPtr]::Zero
 
@@ -44,11 +44,11 @@ public static extern IntPtr dlopen(string path, int flags);
                     }
 
                     If( $lib_handle -eq [System.IntPtr]::Zero ){
-                        Throw "Unable to load $Path"
+                        Throw "[Import-Package:Internals(LoadNative)] Unable to load $Path"
                     }
 
                     # BUG: Leaky handle
-                    Write-Verbose "[Import-Package:Internals] $Path returned leaky handle $lib_handle"
+                    Write-Verbose "[Import-Package:Internals(LoadNative)] $Path returned leaky handle $lib_handle"
                 }
             })
         

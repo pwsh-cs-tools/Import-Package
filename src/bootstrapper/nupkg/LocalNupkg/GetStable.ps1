@@ -18,7 +18,7 @@ param(
             )
             
             If( [string]::IsNullOrWhiteSpace( $Name ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(LocalNupkg.GetStable)] Name cannot be null or whitespace"
             }
             
             $version = $this.GetAllVersions( $Name ) | Where-Object {
@@ -37,7 +37,7 @@ param(
                 $version
             } else {
                 # if this is the case, Import-Package will default to GetPrerelease
-                Write-Warning "Unable to find stable version of $Name$( If( $Wanted ){ " under version $Wanted" } )"
+                Write-Warning "[Import-Package:Internals(LocalNupkg.GetStable)] Unable to find stable version of $Name$( If( $Wanted ){ " under version $Wanted" } )"
             }
         }
 }

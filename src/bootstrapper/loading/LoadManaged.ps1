@@ -15,7 +15,7 @@ param(
             )
 
             If( [string]::IsNullOrWhiteSpace( $Path ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(LoadManaged)] Name cannot be null or whitespace"
             }
 
             try {
@@ -29,14 +29,13 @@ param(
                 } elseif ( Test-Path $Path ) {
                     $AddTypeParams.Path = $Path
                 } else {
-                    Write-Error "[Import-Package:Internals] Unable to find $Path"
-                    return
+                    Throw "[Import-Package:Internals(LoadManaged)] Unable to find $Path"
                 }
 
                 Add-Type @AddTypeParams
                 
             } catch {
-                Write-Error "[Import-Package:Internals] Unable to load $Path`n$($_.Exception.Message)"
+                Throw "[Import-Package:Internals(LoadManaged)] Unable to load $Path`n$($_.Exception.Message)"
             }
         }
 }

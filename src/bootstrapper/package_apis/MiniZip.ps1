@@ -23,7 +23,7 @@ param(
             )
 
             If( [string]::IsNullOrWhiteSpace( $Name ) ){
-                Throw "Name cannot be null or whitespace"
+                Throw "[Import-Package:Internals(MiniZip.GetRemoteZipEntries)] Name cannot be null or whitespace"
             }
 
             $reader = $this.RemoteZipReaderFactory.GetReaderAsync( $Url )

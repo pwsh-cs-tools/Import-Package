@@ -30,7 +30,7 @@ param(
                 $version
             } else {
                 # if this is the case, Import-Package will default to GetPrerelease
-                Write-Warning "Unable to find stable version of $Name$( If( $Wanted ){ " under version $Wanted" } )"
+                Write-Warning "[Import-Package:Internals(RemoteNupkg.GetLatest)] Unable to find stable version of $Name$( If( $Wanted ){ " under version $Wanted" } )"
             }
         }
 }
