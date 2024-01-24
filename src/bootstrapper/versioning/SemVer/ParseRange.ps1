@@ -17,7 +17,8 @@ param(
         -Value {
             param(
                 [string] $Range,
-                [string] $Name
+                [string] $Name,
+                [bool] $AllowPrerelease = $false
             )
             $Range = $Range.Trim()
             
@@ -111,7 +112,11 @@ param(
     
                 If( -not $parsed.MaxVersion ){
                     $effective_range.MaxVersion = $all_versions | Where-Object {
-                        -not $_.PreRelease -and -not $_.LegacyPrerelease
+                        If( $AllowPrerelease ){
+                            $true
+                        } Else {
+                            -not $_.PreRelease -and -not $_.LegacyPrerelease
+                        }
                     } | Select-Object -Last 1
                 } Else {
                     $effective_range.MaxVersion = & {
@@ -122,7 +127,11 @@ param(
                                 $this.Compare( $_, $parsed.MaxVersion ) -lt 0
                             }
                         } | Where-Object {
-                            -not $_.PreRelease -and -not $_.LegacyPrerelease
+                            If( $AllowPrerelease ){
+                                $true
+                            } Else {
+                                -not $_.PreRelease -and -not $_.LegacyPrerelease
+                            }
                         }
                         $acceptable_versions | Select-Object -Last 1
                     }
@@ -130,7 +139,11 @@ param(
     
                 If( -not $parsed.MinVersion ){
                     $effective_range.MinVersion = $all_versions | Where-Object {
-                        -not $_.PreRelease -and -not $_.LegacyPrerelease
+                        If( $AllowPrerelease ){
+                            $true
+                        } Else {
+                            -not $_.PreRelease -and -not $_.LegacyPrerelease
+                        }
                     } | Select-Object -First 1
                 } Else {
                     $effective_range.MinVersion = & {
@@ -141,7 +154,11 @@ param(
                                 $this.Compare( $_, $parsed.MinVersion ) -gt 0
                             }
                         } | Where-Object {
-                            -not $_.PreRelease -and -not $_.LegacyPrerelease
+                            If( $AllowPrerelease ){
+                                $true
+                            } Else {
+                                -not $_.PreRelease -and -not $_.LegacyPrerelease
+                            }
                         }
                         $acceptable_versions | Select-Object -First 1
                     }
