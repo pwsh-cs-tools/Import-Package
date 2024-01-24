@@ -15,7 +15,7 @@
         - $Bootstrapper.SemVer.ParseRange() # NuGet-spec version ranges
         - $Bootstrapper.SemVer.Compare()
     #>
-    & "$PSScriptRoot/nupkg/SemVer.ps1" $Bootstrapper | Out-Null
+    & "$PSScriptRoot/versioning/SemVer.ps1" $Bootstrapper | Out-Null
 
     <#
         # Used for reading data from local nupkgs
