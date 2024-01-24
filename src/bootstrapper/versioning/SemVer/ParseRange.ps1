@@ -167,6 +167,18 @@ param(
                 }
             }
 
+            $out_range.Corrected = @(
+                (& {
+                    If( $out_range.MinVersionInclusive){ "[" } Else { "(" }
+                }),
+                $out_range.MinVersion.Original,
+                ",",
+                $out_range.MaxVersion.Original,
+                (& {
+                    If( $out_range.MaxVersionInclusive){ "]" } Else { ")" }
+                })
+            ) -join ""
+
             $out_range
         }
     
