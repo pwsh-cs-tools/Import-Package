@@ -35,9 +35,9 @@ using System;
     }
     Try {
         Add-Type `
-            -TypeDefinition ( $source_code -join "`n" ) | Out-Null
+            -TypeDefinition ( $source_code -join "`n" ) -ErrorAction Stop | Out-Null
     } Catch {
-        throw [System.Exception]::new( "[Import-Package:Internals] Could not load csharp definitions", $_.Exception )
+        Write-Warning "[Import-Package:Internals] Could not load csharp definitions`n$($_.Exception.Message)"
     }
 
     [ImportPackage.Globals]::Instance.Bootstrapper = $Bootstrapper
