@@ -56,7 +56,7 @@ param(
             # PackageManagement does not support SemVer2
             If( -not [string]::IsNullOrWhiteSpace( $Version ) -and $Destination -eq "PackageManagement" ){
                 $parsed_version = $Bootstrapper.SemVer.Parse( $Version )
-                If( $parsed_version.Prerelease ){
+                If( $parsed_version.IsSemVer2 ){
                     Write-Warning "[Import-Package:Internals(InstallNupkg)] $Name $Version is a SemVer2 prerelease version. Installing to Cache instead of PackageManagement."
                     $Destination = "Cache"
                 }
