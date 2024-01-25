@@ -98,6 +98,9 @@
         - $Bootstrapper.System.RuntimeGraphs
     #>
     & "$PSScriptRoot/system/system_identifiers.ps1" $Bootstrapper | Out-Null
+    
+    # $Bootstrapper.GetPlatformFolders()
+    & "$PSScriptRoot/dependencies/platforms.ps1" $Bootstrapper | Out-Null
 
     # Refactor Bootstrapper.System after runtimeidentifiers.ps1 is refactored
 
