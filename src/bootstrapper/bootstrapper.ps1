@@ -9,6 +9,8 @@
         -Name Root `
         -Value (Resolve-Path "$PSScriptRoot/../..").Path
 
+    Try { & "$PSScriptRoot/csharp/csharp.ps1" $Bootstrapper | Out-Null } Catch {}
+
     <#
         $Bootstrapper.SemVer:
         - $Bootstrapper.SemVer.Parse()
