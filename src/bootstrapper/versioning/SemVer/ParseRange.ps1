@@ -17,8 +17,8 @@ param(
         -Value {
             param(
                 [string] $Range,
-                [string] $Name,
-                [bool] $AllowPrerelease = $false
+                [bool] $AllowPrerelease = $false,
+                [string] $Name, [bool] $Upstream = $true
             )
             $Range = $Range.Trim()
             
@@ -98,7 +98,11 @@ param(
 
             $out_range = If( $Name ){
 
-                $all_versions = $Bootstrapper.RemoteNupkg.GetAllVersions( $Name )
+                $all_versions = If( $Upstream ){
+                    $Bootstrapper.RemoteNupkg.GetAllVersions( $Name )
+                } Else {
+                    $Bootstrapper.LocalNupkg.GetAllVersions( $Name )
+                }
                 $all_versions = $all_versions | ForEach-Object {
                     $this.Parse( $_ )
                 }
@@ -115,7 +119,7 @@ param(
                         If( $AllowPrerelease ){
                             $true
                         } Else {
-                            -not $_.PreRelease -and -not $_.LegacyPrerelease
+                            -not $_.PreRelease <# -and -not $_.LegacyPrerelease #>
                         }
                     } | Select-Object -Last 1
                 } Else {
@@ -130,7 +134,7 @@ param(
                             If( $AllowPrerelease ){
                                 $true
                             } Else {
-                                -not $_.PreRelease -and -not $_.LegacyPrerelease
+                                -not $_.PreRelease <# -and -not $_.LegacyPrerelease #>
                             }
                         }
                         $acceptable_versions | Select-Object -Last 1
@@ -142,7 +146,7 @@ param(
                         If( $AllowPrerelease ){
                             $true
                         } Else {
-                            -not $_.PreRelease -and -not $_.LegacyPrerelease
+                            -not $_.PreRelease <# -and -not $_.LegacyPrerelease #>
                         }
                     } | Select-Object -First 1
                 } Else {
@@ -157,7 +161,7 @@ param(
                             If( $AllowPrerelease ){
                                 $true
                             } Else {
-                                -not $_.PreRelease -and -not $_.LegacyPrerelease
+                                -not $_.PreRelease <# -and -not $_.LegacyPrerelease #>
                             }
                         }
                         $acceptable_versions | Select-Object -First 1
@@ -176,7 +180,7 @@ param(
                     }
                     0 {
                         If( $out_range.MinVersionInclusive -and $out_range.MaxVersionInclusive ){
-                            $this.ParseRange( "[$( $out_range.MinVersion.Original )]" )
+                            $this.ParseRange( "[$( $out_range.MinVersion.Original )]", $AllowPrerelease, $null, $false )
                         } Else {
                             Throw "[Import-Package:Internals(SemVer.ParseRange)] Invalid version range: $Range"
                         }

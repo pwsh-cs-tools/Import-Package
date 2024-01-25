@@ -53,6 +53,7 @@ param(
                 LegacyPrerelease = $legacyPrerelease
                 PreRelease = $preRelease
                 Original = $semVerString
+                IsPrerelease = [bool](([string]::IsNullOrWhiteSpace( $preRelease ) -eq $false) <# -and ([string]::IsNullOrWhiteSpace( $legacyPrerelease ) -eq $false) #>)
             }
             
         }
