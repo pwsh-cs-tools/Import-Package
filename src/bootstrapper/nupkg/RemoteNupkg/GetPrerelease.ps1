@@ -10,6 +10,10 @@ param(
         -Name GetPreRelease `
         -Value {
             param( $Name, $Wanted )
+            
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "[Import-Package:Internals(RemoteNupkg.GetPrerelease)] Name cannot be null or whitespace"
+            }
 
             $versions = $this.GetAllVersions( $Name )
 

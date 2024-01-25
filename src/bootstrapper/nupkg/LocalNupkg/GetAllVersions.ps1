@@ -13,6 +13,10 @@ param(
         -Name GetAllVersions `
         -Value {
             param( $Name )
+            
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "[Import-Package:Internals(LocalNupkg.GetAllVersions)] Name cannot be null or whitespace"
+            }
 
             $combined = New-Object System.Collections.ArrayList
             

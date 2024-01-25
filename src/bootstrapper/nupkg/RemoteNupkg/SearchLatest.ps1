@@ -10,6 +10,11 @@ param(
         -Name SearchLatest `
         -Value {
             param( $Name )
+            
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "[Import-Package:Internals(RemoteNupkg.SearchLatest)] Name cannot be null or whitespace"
+            }
+
             $resource = $this.Endpoints.resources | Where-Object {
                 ($_."@type" -eq "SearchQueryService") -and
                 ($_.comment -like "*(primary)*")

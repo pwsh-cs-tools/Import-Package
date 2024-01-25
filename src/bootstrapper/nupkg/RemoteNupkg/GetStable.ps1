@@ -14,6 +14,10 @@ param(
         -Value {
             param( $Name, $Wanted )
             
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "[Import-Package:Internals(RemoteNupkg.GetStable)] Name cannot be null or whitespace"
+            }
+            
             $version = $this.GetAllVersions( $Name ) | Where-Object {
                 $parsed = $Bootstrapper.Semver.Parse( $_ )
 

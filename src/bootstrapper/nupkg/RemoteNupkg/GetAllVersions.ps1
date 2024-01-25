@@ -13,6 +13,11 @@ param(
         -Name GetAllVersions `
         -Value {
             param( $Name )
+            
+            If( [string]::IsNullOrWhiteSpace( $Name ) ){
+                Throw "[Import-Package:Internals(RemoteNupkg.GetAllVersions)] Name cannot be null or whitespace"
+            }
+
             $resource = $this.Endpoints.resources | Where-Object {
                 $_."@type" -eq "PackageBaseAddress/3.0.0"
             }
