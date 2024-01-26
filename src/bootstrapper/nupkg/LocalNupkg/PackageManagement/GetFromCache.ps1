@@ -53,15 +53,7 @@ param(
                     "$leaf".Replace( $check, "" ) -replace "^\.",""
                 }
 
-                $candidate_versions = [string[]] $candidate_versions
-
-                [Array]::Sort[string]( $candidate_versions, [System.Comparison[string]]({
-                    param($x, $y)
-                    $x = $Bootstrapper.SemVer.Parse( $x )
-                    $y = $Bootstrapper.SemVer.Parse( $y )
-
-                    $Bootstrapper.SemVer.Compare( $x, $y )
-                }))
+                $candidate_versions = $Bootstrapper.SemVer.Sort( $candidate_versions )
 
                 $candidate_versions = If( [string]::IsNullOrWhiteSpace( $Version ) ){
                     $candidate_versions

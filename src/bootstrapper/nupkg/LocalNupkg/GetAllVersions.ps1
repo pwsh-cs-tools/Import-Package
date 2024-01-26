@@ -42,14 +42,6 @@ param(
 
             $combined = $combined | Sort-Object -Unique
 
-            [Array]::Sort[string]( $combined, [System.Comparison[string]]({
-                param($x, $y)
-                $x = $Bootstrapper.SemVer.Parse( $x )
-                $y = $Bootstrapper.SemVer.Parse( $y )
-
-                $Bootstrapper.SemVer.Compare( $x, $y )
-            }))
-
-            $combined
+            $Bootstrapper.SemVer.Sort( $combined )
         }
 }
