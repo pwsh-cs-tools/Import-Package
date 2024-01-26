@@ -11,6 +11,7 @@ param(
     & "$PSScriptRoot/SemVer/Compare.ps1" $semantic_versioning_reader | Out-Null
     & "$PSScriptRoot/SemVer/ParseRange.ps1" $semantic_versioning_reader $Bootstrapper | Out-Null
     & "$PSScriptRoot/SemVer/ReduceRanges.ps1" $semantic_versioning_reader | Out-Null
+    & "$PSScriptRoot/SemVer/LimitVersions.ps1" $semantic_versioning_reader | Out-Null
 
     $Bootstrapper | Add-Member `
         -MemberType NoteProperty `
