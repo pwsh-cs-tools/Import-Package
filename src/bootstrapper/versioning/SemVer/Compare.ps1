@@ -11,6 +11,14 @@ param(
         -Name Compare `
         -Value {
             param( $x, $y )
+
+            If( $x.GetType() -eq [string] ){
+                $x = $this.Parse( $x )
+            }
+            If( $y.GetType() -eq [string] ){
+                $y = $this.Parse( $y )
+            }
+
             if ($x.Major -ne $y.Major) {
                 return $x.Major - $y.Major
             }
